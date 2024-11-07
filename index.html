@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Hero Section</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            height: 100%;
+        }
+
+        .hero-section {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: url('image.png') no-repeat center center/cover;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .clickable-area {
+            position: absolute;
+            cursor: pointer;
+            width: 18%;
+            height: 47.5%;
+            top: 35%;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            border-radius: 5px;
+        }
+
+        .clickable-area:hover {
+            border-color: #CAB5A3;
+            box-shadow: 0 0 15px 5px rgba(202, 181, 163, 0.6); /* Glow effect */
+        }
+
+        .clickable-area .border-animation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        /* Animated borders */
+        .border-animation::before, .border-animation::after {
+            content: '';
+            position: absolute;
+            background-color: white;
+        }
+
+        /* Top and bottom borders */
+        .border-animation::before {
+            width: 0%;
+            height: 1px;
+            top: 0;
+            left: 0;
+            animation: topBorderAnimation 0.5s forwards;
+        }
+
+        .border-animation::after {
+            width: 0%;
+            height: 1px;
+            bottom: 0;
+            right: 0;
+            animation: bottomBorderAnimation 0.5s forwards;
+        }
+
+        /* Left and right borders */
+        .clickable-area:hover .border-animation {
+            animation: fadeInBorders 0.5s ease forwards;
+        }
+
+        @keyframes fadeInBorders {
+            0% { border-color: transparent; }
+            100% { border-color: white; }
+        }
+
+        @keyframes topBorderAnimation {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        @keyframes bottomBorderAnimation {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        /* Specific door positions */
+        .door1 { left: 21%; }
+        .door2 { left: 41.2%; }
+        .door3 { left: 61.2%; }
+
+        /* Text overlay */
+        .clickable-area .overlay-text {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .clickable-area:hover .overlay-text {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero-section" id="hero">
+    <div class="clickable-area door1" onclick="window.location.href='https://www.icloud.com/mail/';">
+        <div class="border-animation"></div>
+        <div class="overlay-text">GO TO MAKHNO STUDIO</div>
+    </div>
+    <div class="clickable-area door2" onclick="window.location.href='https://www.canva.com/settings/your-account';">
+        <div class="border-animation"></div>
+        <div class="overlay-text">GO TO CANVA ACCOUNT</div>
+    </div>
+    <div class="clickable-area door3" onclick="window.location.href='https://chatgpt.com/c/6723aed0-3114-800d-9f35-d0f60b6b8c9a';">
+        <div class="border-animation"></div>
+        <div class="overlay-text">GO TO CHATGPT LINK</div>
+    </div>
+</div>
+
+<script>
+    const hero = document.getElementById('hero');
+    const doors = document.querySelectorAll('.clickable-area');
+
+    // Function to handle mouse movement for parallax effect
+    function handleMouseMove(e) {
+        const { innerWidth, innerHeight } = window;
+        const xPos = (e.clientX / innerWidth - 0.5) * 20; // Adjusted movement for stronger effect
+        const yPos = (e.clientY / innerHeight - 0.5) * 20; // Adjusted movement for stronger effect
+
+        // Apply parallax transform to the hero section
+        hero.style.transform = `scale(1.1) translate(${xPos}px, ${yPos}px)`;
+    }
+
+    // Add event listeners to each door area to activate/deactivate the effect
+    doors.forEach(door => {
+        door.addEventListener('mouseenter', () => {
+            document.addEventListener('mousemove', handleMouseMove);
+        });
+        door.addEventListener('mouseleave', () => {
+            hero.style.transform = 'scale(1) translate(0, 0)';
+            document.removeEventListener('mousemove', handleMouseMove);
+        });
+    });
+</script>
+
+</body>
+</html>
